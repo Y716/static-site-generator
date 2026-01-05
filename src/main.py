@@ -1,7 +1,7 @@
-from textnode import TextNode
+from textnode import TextNode, TextType
 
 def main():
-    textnode = TextNode('This is a text node', "text")
+    textnode = TextNode('This is a text node', TextType.PLAIN_TEXT)
     print(textnode)
 
 if __name__ == "__main__":
