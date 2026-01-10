@@ -21,6 +21,6 @@ class TextNode():
             return True
         else:
             return False
-    
+            
     def __repr__(self):
         return f"TextNode({self.text.upper()}, {self.text_type.value.upper()}, {None if self.url == None else self.url.upper()})"
