@@ -9,7 +9,7 @@ class TextType(Enum):
     IMAGE = "image"
 
 class TextNode():
-    def __init__(self, text, text_type, url=None):
+    def __init__(self, text: str, text_type: TextType, url=None):
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -23,4 +23,4 @@ class TextNode():
             return False
             
     def __repr__(self):
-        return f"TextNode({self.text.upper()}, {self.text_type.value.upper()}, {None if self.url == None else self.url.upper()})"
+        return f"TextNode({self.text}, {self.text_type.value.upper()}, {None if self.url == None else self.url})"
