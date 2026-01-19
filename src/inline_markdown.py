@@ -2,7 +2,7 @@ import re
 from textnode import TextType, TextNode
 from leafnode import LeafNode
 
-def text_node_to_html_node(textnode):
+def text_node_to_html_node(textnode) -> LeafNode:
     if textnode.text_type not in TextType:
         raise Exception("Text Type is not valid")
     elif textnode.text_type == TextType.TEXT:
@@ -92,7 +92,7 @@ def split_nodes_link(old_nodes) -> list[TextNode]:
 
     return new_nodes
 
-def text_to_textnodes(text):
+def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = []
     old_node = TextNode(text=text, text_type=TextType.TEXT)
     new_nodes = split_nodes_delimiter([old_node], delimiter="**", text_type=TextType.BOLD)
