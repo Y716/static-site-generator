@@ -24,7 +24,7 @@ def extract_title(markdown: str) -> str:
             line = line.replace("# ", "")
             return line
 
-def generate_page(from_path: str, template_path: str, dest_path: str):
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str):
     print(f"Generating Pages from {from_path} to {dest_path} using {template_path}")
     with open(from_path, mode='r') as file:
          content = file.read()
@@ -34,21 +34,26 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
     html_page = html_nodes.to_html()
     title = extract_title(content)
     full_html_page = template.replace("{{ Title }}", title).replace("{{ Content }}", html_page)
+    full_html_page = full_html_page.replace(
+        'href="/', f'href="{basepath}'
+    ).replace(
+        'src="/', f'src="{basepath}'
+    )
     
     with open(dest_path, mode="w") as dest_file:
         dest_file.write(full_html_page)
 
-def generate_page_recursive(dir_path_content: str, template_path: str, dir_path_dest: str):
+def generate_page_recursive(dir_path_content: str, template_path: str, dir_path_dest: str, basepath: str):
     for filename in os.listdir(dir_path_content):
         content_path = os.path.join(dir_path_content, filename)
         destination_path = os.path.join(dir_path_dest, filename)
         if os.path.isfile(content_path):
             destination_path = destination_path.replace(".md", ".html")
-            generate_page(content_path, template_path, destination_path)
+            generate_page(content_path, template_path, destination_path, basepath)
         else:
             destination_path += "/"
             os.mkdir(destination_path)
-            generate_page_recursive(content_path, template_path, destination_path)
+            generate_page_recursive(content_path, template_path, destination_path, basepath)
     
     
     
