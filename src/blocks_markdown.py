@@ -29,6 +29,8 @@ def block_to_block_type(block: str) -> BlockType:
         lines = block.splitlines()
         for line in lines:
             if not line.startswith("> "):
+                if line == ">":
+                    continue
                 return BlockType.PARAGRAPH
         return BlockType.QUOTE
     elif block.startswith("- "):
@@ -78,7 +80,7 @@ def get_tag(blocktype: BlockType, text: str) -> tuple[str, str]:
                 text = text.replace(f"{match.group(0)} ", "")
                 return f"h{len(match.group(0))}", text
         case BlockType.QUOTE:
-            text = text.replace("> ", "")
+            text = text.replace("> ", "").replace(">", "\n")
             return "blockquote", text
         case BlockType.CODE:
             text = text.strip("```").lstrip()
@@ -126,19 +128,3 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
         html_nodes.append(html_node)
     
     return ParentNode(tag="div", children=html_nodes)
-
-
-md = """
-    - This is a list
-    - with items
-    - and _more_ items
-
-    1. This is an `ordered` list
-    2. with items
-    3. and more items
-
-    """
-
-node = markdown_to_html_node(md)
-html = node.to_html()
-print(html)
